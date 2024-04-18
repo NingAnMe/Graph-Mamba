@@ -10,6 +10,7 @@ from graphgps.encoder.laplace_pos_encoder import LapPENodeEncoder
 from graphgps.encoder.ppa_encoder import PPANodeEncoder
 from graphgps.encoder.signnet_pos_encoder import SignNetNodeEncoder
 from graphgps.encoder.voc_superpixels_encoder import VOCNodeEncoder
+from graphgps.encoder.pbfs_superpixels_encoder import PBFSNodeEncoder
 from graphgps.encoder.type_dict_encoder import TypeDictNodeEncoder
 from graphgps.encoder.linear_node_encoder import LinearNodeEncoder
 from graphgps.encoder.equivstable_laplace_pos_encoder import EquivStableLapPENodeEncoder
@@ -105,6 +106,7 @@ ds_encs = {'Atom': AtomEncoder,
            'PPANode': PPANodeEncoder,
            'TypeDictNode': TypeDictNodeEncoder,
            'VOCNode': VOCNodeEncoder,
+           'PBFSNode': PBFSNodeEncoder,
            'LinearNode': LinearNodeEncoder}
 
 # Positional Encoding node encoders.

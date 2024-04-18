@@ -70,7 +70,7 @@ class CustomLogger(Logger):
             # TorchMetrics AUROC on GPU if available.
             auroc_score = auroc(pred_score.to(torch.device(cfg.device)),
                                 true.to(torch.device(cfg.device)),
-                                pos_label=1)
+                                task='binary')
             if self.test_scores:
                 # SK-learn version.
                 try:
@@ -111,6 +111,7 @@ class CustomLogger(Logger):
             # TorchMetrics AUROC on GPU is much faster than sklearn for large ds
             res['auc'] = reformat(auroc(pred_score.to(torch.device(cfg.device)),
                                         true.to(torch.device(cfg.device)).squeeze(),
+                                        task='multiclass',  # multiclass for target [0, 1, 2, 3]  multilabel for [[1, 0, 0, 0], [0, 1, 0, 0]]
                                         num_classes=pred_score.shape[1],
                                         average='macro'))
 
@@ -132,15 +133,15 @@ class CustomLogger(Logger):
         pred_score = pred_score.to(torch.device(cfg.device))
         acc = MetricWrapper(metric='accuracy',
                             target_nan_mask='ignore-mean-label',
-                            threshold=0.,
+                            task='binary',
                             cast_to_int=True)
         ap = MetricWrapper(metric='averageprecision',
                            target_nan_mask='ignore-mean-label',
-                           pos_label=1,
+                           task='binary',
                            cast_to_int=True)
         auroc = MetricWrapper(metric='auroc',
                               target_nan_mask='ignore-mean-label',
-                              pos_label=1,
+                              task='binary',
                               cast_to_int=True)
         results = {
             'accuracy': reformat(acc(pred_score, true)),

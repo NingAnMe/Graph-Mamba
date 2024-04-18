@@ -21,6 +21,7 @@ from graphgps.loader.dataset.aqsol_molecules import AQSOL
 from graphgps.loader.dataset.coco_superpixels import COCOSuperpixels
 from graphgps.loader.dataset.malnet_tiny import MalNetTiny
 from graphgps.loader.dataset.voc_superpixels import VOCSuperpixels
+from graphgps.loader.dataset.pbfs_function import PBFSSuperpixels
 from graphgps.loader.split_generator import (prepare_splits,
                                              set_dataset_splits)
 from graphgps.transform.posenc_stats import compute_posenc_stats
@@ -153,6 +154,10 @@ def load_dataset_master(format, name, dataset_dir):
             #dataset_dir = '/datasets/LRGB'
             dataset = preformat_VOCSuperpixels(dataset_dir, name,
                                                cfg.dataset.slic_compactness)
+
+        elif pyg_dataset_id == 'PBFSSuperpixels':
+            #dataset_dir = '/datasets/LRGB'
+            dataset = preformat_PBFSSuperpixels(dataset_dir, name)
 
         elif pyg_dataset_id == 'COCOSuperpixels':
             #dataset_dir = '/datasets/LRGB'
@@ -700,6 +705,22 @@ def preformat_VOCSuperpixels(dataset_dir, name, slic_compactness):
         [VOCSuperpixels(root=dataset_dir, name=name,
                         slic_compactness=slic_compactness,
                         split=split)
+         for split in ['train', 'val', 'test']]
+    )
+    return dataset
+
+
+def preformat_PBFSSuperpixels(dataset_dir, name):
+    """Load and preformat VOCSuperpixels dataset.
+
+    Args:
+        dataset_dir: path where to store the cached dataset
+    Returns:
+        PyG dataset object
+    """
+    dataset = join_dataset_splits(
+        [PBFSSuperpixels(root=dataset_dir, name=name,
+                         split=split)
          for split in ['train', 'val', 'test']]
     )
     return dataset
